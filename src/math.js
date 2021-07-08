@@ -502,7 +502,13 @@ var MathFragment = P(Fragment, function(_, _super) {
   _.init = function(leftEnd, rightEnd) {
     // just select one thing if only one argument
     _super.init.call(this, leftEnd, rightEnd || leftEnd);
-    this.jQ = this.fold($(), function(jQ, child){ return child.jQ.add(jQ); });
+
+    var logger = (typeof App !== "undefined" && App !== null ? App.warn : void 0) || function(){};
+
+    this.jQ = this.fold($(), function(jQ, child){
+      logger(child.ctrlSeq);
+      return child.jQ.add(jQ);
+    });
   };
   _.latex = function() {
     return this.fold('', function(latex, el){ return latex + el.latex(); });

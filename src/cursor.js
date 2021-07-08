@@ -23,18 +23,28 @@ var Cursor = P(Point, function(_) {
   };
 
   _.show = function() {
+    var logger = (typeof App !== "undefined" && App !== null ? App.error : void 0) || function(){};
+
     this.jQ = this._jQ.removeClass('blink');
     if ('intervalId' in this) //already was shown, just restart interval
       clearInterval(this.intervalId);
     else { //was hidden and detached, insert this.jQ back into HTML DOM
       if (this[R]) {
-        if (this.selection && this.selection.end[L][L] === this[L])
+        if (this.selection && this.selection.end[L][L] === this[L]) {
+          if (this.selection == null)
+            logger('this.selection is null');
           this.jQ.insertBefore(this.selection.jQ);
-        else
+        } else {
+          if (this[R] == null)
+            logger('this[R] is null');
           this.jQ.insertBefore(this[R].jQ.first());
+        }
       }
-      else
+      else {
+        if (this.parent == null)
+          logger('this.parent is null');
         this.jQ.appendTo(this.parent.jQ);
+      }
       this.parent.focus();
     }
     this.intervalId = setInterval(this.blink, 500);
@@ -439,6 +449,9 @@ var Cursor = P(Point, function(_) {
         left = leftRight;
       }
     }
+    var logger = (typeof App !== "undefined" && App !== null ? App.warn : void 0) || function(){};
+    if (this.root != null)
+      logger("_.selectFrom on", this.root.latex());
     this.hide().selection = Selection(left[L][R] || left.parent.endChild[L], right[R][L] || right.parent.endChild[R]);
     this.insRightOf(right[R][L] || right.parent.endChild[R]);
     this.root.selectionChanged();
