@@ -68,6 +68,8 @@ jQuery.fn.mathquill = function(cmd, latex) {
           else if (cursor[L] instanceof SupSub && cursor[L][L] instanceof EmptyNullBlock)
             for (var i=0; i<3; i++) 
               cursor.moveLeft(); // EmptyNullBlock confuses the cursor
+          else if (latex === 'f\\left(x\\right)')
+            cursor.moveRight();
           else
             cursor.hopLeft().moveRight();
           // this is a really complicated way of getting at the
